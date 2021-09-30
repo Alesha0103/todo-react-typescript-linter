@@ -1,6 +1,7 @@
 import React from "react";
+import {InputForEditType} from "./types";
 
-export const InputForEdit = (props) => {
+export const InputForEdit:React.FC<InputForEditType> = (props) => {
   const { editedValue, setEditedValue } = props;
   return (
     <input

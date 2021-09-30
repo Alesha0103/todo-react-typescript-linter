@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
 import { InputForEdit } from "./input-for-edit";
+import {TodoItemsType, ItemType} from "./types";
 
-export const TodoItem = (props) => {
+export const TodoItem:React.FC<TodoItemsType> = (props) => {
   const { item, todoArray, setTodoArray } = props;
 
   const [inputVisibility, setInputVisibility] = useState(false);
@@ -12,7 +13,7 @@ export const TodoItem = (props) => {
     setInputVisibility(true);
   };
 
-  const deleteItem = (el) => () => {
+  const deleteItem = (el:ItemType) => () => {
     const elementIndex = todoArray.indexOf(el);
     setTodoArray([
        ...todoArray.slice(0, elementIndex),
@@ -20,10 +21,12 @@ export const TodoItem = (props) => {
       ]);
   };
 
-  const editItem = (el) => () => {
+  const editItem = (el:ItemType) => () => {
     if (editedValue) {
       const foundElement = todoArray.find((obj) => obj.id === el.id);
-      foundElement.text = editedValue;
+      if (foundElement) {
+        foundElement.text = editedValue
+      };
     }
     setInputVisibility(false);
   };

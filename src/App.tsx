@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import "./App.css";
 import { TodoItem } from "./todo-item";
 
-export const App = () => {
-  const [todoArray, setTodoArray] = useState([]);
+import {ItemType} from "./types";
+
+export const App:React.FC = () => {
+  const [todoArray, setTodoArray] = useState<ItemType[]>([]);
   const [inputVisibility, setInputVisibility] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [count, setCount] = useState(1);
@@ -18,7 +20,7 @@ export const App = () => {
   const submitValues = async () => {
     if (inputValue) {
       setCount(count + 1);
-      const newItem = {
+      const newItem:ItemType = {
         id: count,
         text: inputValue,
       };
@@ -44,7 +46,7 @@ export const App = () => {
   return (
     <div className='App'>
       {todoArray &&
-        todoArray.map((item) => {
+        todoArray.map((item:ItemType) => {
           return (
             <TodoItem key={item.id} item={item} todoArray={todoArray} setTodoArray={setTodoArray} />
           );
