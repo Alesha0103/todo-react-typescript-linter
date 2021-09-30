@@ -8,25 +8,27 @@ export const App = () => {
   const [inputValue, setInputValue] = useState("");
   const [count, setCount] = useState(1);
 
-//   console.log(`todoArray`, todoArray);
-
   const openInputForAdding = () => {
+    if (!inputVisibility) {
+      setInputValue("");
+    }
     setInputVisibility(!inputVisibility);
   };
 
-  const submitValues = () => {
+  const submitValues = async () => {
     if (inputValue) {
       setCount(count + 1);
       const newItem = {
         id: count,
         text: inputValue,
       };
-      setTodoArray([...todoArray, newItem]);
+      await setTodoArray([...todoArray, newItem]);
+      setInputValue("")
     }
   };
 
   let customInput = null;
-  if (inputVisibility)
+  if (inputVisibility) {
     customInput = (
       <>
         <input
@@ -37,19 +39,16 @@ export const App = () => {
         <button onClick={submitValues}>Submit</button>
       </>
     );
+  }
 
   return (
     <div className='App'>
-      {todoArray && todoArray.map((item) => {
-            return (
-               <TodoItem
-                  key={item.id}
-                  item={item}
-                  todoArray={todoArray}
-                  setTodoArray={setTodoArray}
-               />
-            );
-         })}
+      {todoArray &&
+        todoArray.map((item) => {
+          return (
+            <TodoItem key={item.id} item={item} todoArray={todoArray} setTodoArray={setTodoArray} />
+          );
+        })}
       <button onClick={openInputForAdding}>Add New Item</button>
 
       <div>{customInput}</div>
