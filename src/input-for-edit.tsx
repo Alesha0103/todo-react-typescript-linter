@@ -2,13 +2,12 @@ import React from 'react';
 import { InputForEditType } from './types';
 
 export const InputForEdit: React.FC<InputForEditType> = (props) => {
-  const { editedValue, setEditedValue } = props;
+  const { inputForEditRef } = props;
   return (
     <input
-      className="input-for-edit"
+      ref={inputForEditRef}
       placeholder="edit your item"
-      value={editedValue}
-      onChange={(e): void => setEditedValue(e.target.value)}
+      className="input-for-edit"
     />
   );
 };

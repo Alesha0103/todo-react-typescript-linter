@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { InputForEdit } from './input-for-edit';
 import { TodoItemsType, ItemType } from './types';
@@ -7,7 +7,8 @@ export const TodoItem: React.FC<TodoItemsType> = (props) => {
   const { item, todoArray, setTodoArray } = props;
 
   const [inputVisibility, setInputVisibility] = useState(false);
-  const [editedValue, setEditedValue] = useState('');
+
+  const inputForEditRef = useRef<HTMLInputElement>(null);
 
   const openInputForEdit = (): void => {
     setInputVisibility(true);
@@ -22,10 +23,10 @@ export const TodoItem: React.FC<TodoItemsType> = (props) => {
   };
 
   const editItem = (el: ItemType) => (): void => {
-    if (editedValue) {
+    if (inputForEditRef.current?.value) {
       const foundElement = todoArray.find((obj) => obj.id === el.id);
       if (foundElement) {
-        foundElement.text = editedValue;
+        foundElement.text = inputForEditRef.current.value;
       }
     }
     setInputVisibility(false);
@@ -54,12 +55,7 @@ export const TodoItem: React.FC<TodoItemsType> = (props) => {
       <button onClick={deleteItem(item)} type="submit">
         delete
       </button>
-      {inputVisibility && (
-        <InputForEdit
-          editedValue={editedValue}
-          setEditedValue={setEditedValue}
-        />
-      )}
+      {inputVisibility && <InputForEdit inputForEditRef={inputForEditRef} />}
     </div>
   );
 };

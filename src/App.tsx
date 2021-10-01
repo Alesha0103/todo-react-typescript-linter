@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './App.css';
 import { TodoItem } from './todo-item';
 
@@ -7,25 +7,26 @@ import { ItemType } from './types';
 export const App: React.FC = () => {
   const [todoArray, setTodoArray] = useState<ItemType[]>([]);
   const [inputVisibility, setInputVisibility] = useState(false);
-  const [inputValue, setInputValue] = useState('');
   const [count, setCount] = useState(1);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const openInputForAdding = (): void => {
-    if (!inputVisibility) {
-      setInputValue('');
+    if (!inputVisibility && inputRef.current) {
+      inputRef.current.value = '';
     }
     setInputVisibility(!inputVisibility);
   };
 
-  const submitValues = async (): Promise<void> => {
-    if (inputValue) {
+  const submitValues = (): void => {
+    if (inputRef.current?.value) {
       setCount(count + 1);
       const newItem: ItemType = {
         id: count,
-        text: inputValue,
+        text: inputRef.current?.value,
       };
-      await setTodoArray([...todoArray, newItem]);
-      setInputValue('');
+      setTodoArray([...todoArray, newItem]);
+      inputRef.current.value = '';
     }
   };
 
@@ -33,11 +34,7 @@ export const App: React.FC = () => {
   if (inputVisibility) {
     customInput = (
       <>
-        <input
-          value={inputValue}
-          onChange={(e): void => setInputValue(e.target.value)}
-          placeholder="input value"
-        />
+        <input ref={inputRef} placeholder="input value" />
         <button onClick={submitValues} type="submit">
           Submit
         </button>
